@@ -81,15 +81,15 @@ function install_client() {
     exit 1
     ;;
   esac
-  mkdir -p /root/scripts/nodestatus/client/
+  mkdir -p /root/app/nodestatus/client/
   cd /tmp && wget -N "https://github.com/cokemine/nodestatus-client-go/releases/latest/download/status-client_linux_${arch}.tar.gz"
   tar -zxvf "status-client_linux_${arch}.tar.gz" status-client
-  mv status-client /root/scripts/nodestatus/client/
-  chmod +x /root/scripts/nodestatus/client/status-client
-  [[ -n ${dsn} ]] && echo -e "DSN=\"${dsn}\"" > /root/scripts/nodestatus/client/config.conf
-  wget https://raw.githubusercontent.com/cokemine/nodestatus-client-go/master/service/status-client.service -P /root/scripts/nodestatus/client/
-  sed -i "s/\/usr\/local\/NodeStatus/\/root\/scripts\/nodestatus/g" /root/scripts/nodestatus/client/status-client.service
-  cp /root/scripts/nodestatus/client/status-client.service /usr/lib/systemd/system/status-client.service
+  mv status-client /root/app/nodestatus/client/
+  chmod +x /root/app/nodestatus/client/status-client
+  [[ -n ${dsn} ]] && echo -e "DSN=\"${dsn}\"" > /root/app/nodestatus/client/config.conf
+  wget https://raw.githubusercontent.com/cokemine/nodestatus-client-go/master/service/status-client.service -P /root/app/nodestatus/client/
+  sed -i "s/\/usr\/local\/NodeStatus/\/root\/app\/nodestatus/g" /root/app/nodestatus/client/status-client.service
+  cp /root/app/nodestatus/client/status-client.service /usr/lib/systemd/system/status-client.service
   systemctl enable status-client
   systemctl start status-client
   check_pid
@@ -104,9 +104,9 @@ function uninstall_client() {
   systemctl stop status-client
   systemctl disable status-client
   if [[ ${is_update} == 0 ]]; then
-    rm -rf /root/scripts/nodestatus/client/
+    rm -rf /root/app/nodestatus/client/
   else
-    rm -rf /root/scripts/nodestatus/client/status-client
+    rm -rf /root/app/nodestatus/client/status-client
   fi
   rm -rf /usr/lib/systemd/system/status-client.service
 }
